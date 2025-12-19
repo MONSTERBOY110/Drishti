@@ -14,19 +14,17 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --gray: #6b7280;
-            --light: #f9fafb;
-            --border: #e5e7eb;
+            --white: #ffffff;
+            --ink-black: #00171f;
+            --deep-twilight: #03045e;
+            --bright-teal-blue: #0077b6;
+            --border: rgba(0, 23, 31, 0.1);
+            --border-dark: rgba(0, 119, 182, 0.2);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--deep-twilight) 0%, var(--ink-black) 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -69,54 +67,55 @@
 
         /* Card */
         .card {
-            background: white;
+            background: var(--white);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 23, 31, 0.2);
             padding: 30px;
             margin-bottom: 30px;
+            border: 1px solid var(--border);
         }
 
         .card h2 {
-            color: var(--primary);
+            color: var(--bright-teal-blue);
             margin-bottom: 20px;
             font-size: 24px;
         }
 
         /* Upload Area */
         .upload-area {
-            border: 3px dashed var(--primary);
+            border: 3px dashed var(--bright-teal-blue);
             border-radius: 8px;
             padding: 40px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: var(--light);
+            background: rgba(0, 119, 182, 0.05);
         }
 
         .upload-area:hover {
-            background: #f0f4ff;
-            border-color: var(--primary-dark);
+            background: rgba(0, 119, 182, 0.1);
+            border-color: var(--deep-twilight);
         }
 
         .upload-area.dragover {
-            background: #e0e7ff;
-            border-color: var(--primary-dark);
+            background: rgba(0, 119, 182, 0.15);
+            border-color: var(--deep-twilight);
         }
 
         .upload-icon {
             font-size: 50px;
-            color: var(--primary);
+            color: var(--bright-teal-blue);
             margin-bottom: 15px;
         }
 
         .upload-area p {
-            color: var(--gray);
+            color: var(--ink-black);
             margin: 10px 0;
         }
 
         .upload-area .hint {
             font-size: 14px;
-            color: #9ca3af;
+            color: rgba(0, 23, 31, 0.6);
         }
 
         #photoInput {
@@ -140,7 +139,7 @@
             height: auto;
             border-radius: 8px;
             margin-bottom: 20px;
-            border: 1px solid var(--border);
+            border: 2px solid var(--bright-teal-blue);
         }
 
         /* Buttons */
@@ -161,30 +160,30 @@
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
+            background: var(--bright-teal-blue);
+            color: var(--white);
             flex: 1;
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background: var(--deep-twilight);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 119, 182, 0.3);
         }
 
         .btn-primary:disabled {
-            background: #cbd5e1;
+            background: rgba(0, 23, 31, 0.3);
             cursor: not-allowed;
             transform: none;
         }
 
         .btn-secondary {
-            background: var(--gray);
-            color: white;
+            background: var(--ink-black);
+            color: var(--white);
         }
 
         .btn-secondary:hover {
-            background: #4b5563;
+            background: var(--deep-twilight);
         }
 
         /* Loading */
@@ -199,8 +198,8 @@
         }
 
         .spinner {
-            border: 4px solid var(--light);
-            border-top: 4px solid var(--primary);
+            border: 4px solid rgba(0, 119, 182, 0.2);
+            border-top: 4px solid var(--bright-teal-blue);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -223,15 +222,15 @@
         }
 
         .summary {
-            background: #f0fdf4;
-            border-left: 4px solid var(--success);
+            background: rgba(0, 119, 182, 0.08);
+            border-left: 4px solid var(--bright-teal-blue);
             padding: 20px;
             border-radius: 6px;
             margin-bottom: 20px;
         }
 
         .summary h3 {
-            color: var(--success);
+            color: var(--bright-teal-blue);
             margin-bottom: 10px;
         }
 
@@ -243,30 +242,32 @@
         }
 
         .stat {
-            background: white;
+            background: var(--white);
             padding: 15px;
             border-radius: 6px;
             text-align: center;
+            border: 1px solid var(--border);
         }
 
         .stat-value {
             font-size: 24px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--bright-teal-blue);
         }
 
         .stat-label {
             font-size: 12px;
-            color: var(--gray);
+            color: var(--ink-black);
             margin-top: 5px;
+            opacity: 0.7;
         }
 
         .error {
-            background: #fef2f2;
-            border-left: 4px solid var(--danger);
+            background: rgba(0, 119, 182, 0.12);
+            border-left: 4px solid var(--deep-twilight);
             padding: 20px;
             border-radius: 6px;
-            color: var(--danger);
+            color: var(--deep-twilight);
             margin-bottom: 20px;
         }
 
@@ -279,23 +280,24 @@
         }
 
         .match-card {
-            background: white;
+            background: var(--white);
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 23, 31, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border);
         }
 
         .match-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 119, 182, 0.15);
         }
 
         .match-image {
             width: 100%;
             height: 250px;
             object-fit: cover;
-            background: var(--light);
+            background: rgba(0, 119, 182, 0.05);
         }
 
         .match-info {
@@ -304,14 +306,14 @@
 
         .match-camera {
             font-weight: 600;
-            color: var(--primary);
+            color: var(--bright-teal-blue);
             margin-bottom: 8px;
         }
 
         .match-confidence {
             display: inline-block;
-            background: var(--success);
-            color: white;
+            background: var(--bright-teal-blue);
+            color: var(--white);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 14px;
@@ -321,13 +323,15 @@
 
         .match-time {
             font-size: 14px;
-            color: var(--gray);
+            color: var(--ink-black);
             margin-bottom: 5px;
+            opacity: 0.7;
         }
 
         .match-frame {
             font-size: 12px;
-            color: #9ca3af;
+            color: var(--ink-black);
+            opacity: 0.5;
         }
 
         /* Responsive */
@@ -356,26 +360,28 @@
         .no-results {
             text-align: center;
             padding: 40px 20px;
-            color: var(--gray);
+            color: var(--ink-black);
+            opacity: 0.6;
         }
 
         .no-results i {
             font-size: 50px;
             margin-bottom: 20px;
-            opacity: 0.5;
+            opacity: 0.3;
         }
 
         /* CCTV Preview Section */
         .cctv-preview-section {
-            background: white;
+            background: var(--white);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 23, 31, 0.2);
             padding: 30px;
             margin-bottom: 30px;
+            border: 1px solid var(--border);
         }
 
         .cctv-preview-section h2 {
-            color: var(--primary);
+            color: var(--bright-teal-blue);
             margin-bottom: 20px;
             font-size: 24px;
         }
@@ -394,7 +400,8 @@
             height: 0;
             overflow: hidden;
             border-radius: 8px;
-            background: #000;
+            background: var(--ink-black);
+            border: 1px solid var(--border-dark);
         }
 
         .cctv-video-container video {
@@ -415,8 +422,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--deep-twilight) 0%, var(--ink-black) 100%);
+            color: var(--white);
             font-size: 18px;
             flex-direction: column;
             gap: 20px;
@@ -438,15 +445,15 @@
             padding: 10px 20px;
             border: none;
             border-radius: 6px;
-            background: var(--primary);
-            color: white;
+            background: var(--bright-teal-blue);
+            color: var(--white);
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s ease;
         }
 
         .cctv-controls button:hover {
-            background: var(--primary-dark);
+            background: var(--deep-twilight);
         }
 
         @media (max-width: 768px) {
@@ -478,7 +485,7 @@
         <!-- CCTV Preview Section -->
         <div class="cctv-preview-section">
             <h2><i class="fas fa-video"></i> CCTV Footage Preview</h2>
-            <p style="color: var(--gray); margin-bottom: 20px;">
+            <p style="color: var(--ink-black); margin-bottom: 20px;">
                 Watch CCTV footage preview from all cameras. The footage plays on loop.
             </p>
             <div class="cctv-grid" id="cctvContainer"></div>
@@ -495,7 +502,7 @@
         <!-- Upload Card -->
         <div class="card">
             <h2><i class="fas fa-image"></i> Upload Lost Person Photo</h2>
-            <p style="color: var(--gray); margin-bottom: 20px;">
+            <p style="color: var(--ink-black); margin-bottom: 20px;">
                 Upload a photo of the lost person. Our system will search through CCTV footage from all cameras.
             </p>
 
