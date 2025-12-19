@@ -299,3 +299,145 @@ class SearchService:
         minutes = int(seconds // 60)
         secs = int(seconds % 60)
         return f"{minutes:02d}:{secs:02d}"
+    async def test_rtsp_connection(self, rtsp_url: str, username: str = None, password: str = None) -> Dict[str, Any]:
+        """Test if RTSP stream is accessible"""
+        try:
+            logger.info(f"Testing RTSP connection: {rtsp_url[:50]}...")
+            
+            # Try to open stream
+            cap = cv2.VideoCapture(rtsp_url)
+            
+            if not cap.isOpened():
+                logger.warning(f"Cannot connect to RTSP stream")
+                return {
+                    "connected": False,
+                    "error": "Cannot open RTSP stream"
+                }
+            
+            # Try to read a frame
+            ret, frame = cap.read()
+            cap.release()
+            
+            if ret:
+                logger.info("RTSP connection successful")
+                return {
+                    "connected": True,
+                    "message": "Stream is accessible"
+                }
+            else:
+                return {
+                    "connected": False,
+                    "error": "Cannot read frame from stream"
+                }
+                
+        except Exception as e:
+            logger.error(f"RTSP test error: {e}")
+            return {
+                "connected": False,
+                "error": str(e)
+            }
+    
+    async def capture_rtsp_footage(
+        self,
+        rtsp_url: str,
+        duration_seconds: int = 15,
+        camera_name: str = "CCTV",
+        output_dir: str = "CCTVS"
+    ) -> str:
+        """
+        Capture footage from live RTSP stream (max 15 seconds)
+        
+        Args:
+            rtsp_url: RTSP stream URL
+            duration_seconds: How long to record (default/max 15 seconds)
+            camera_name: Name of camera for logging
+            output_dir: Directory to save captured video
+            
+        Returns:
+            Path to saved video file or None if failed
+        """
+        try:
+            # Enforce 15-second maximum
+            duration_seconds = min(duration_seconds, 15)
+            
+            logger.info(f"Starting RTSP capture from {camera_name} for {duration_seconds}s...")
+            
+            # Open RTSP stream
+            cap = cv2.VideoCapture(rtsp_url)
+            
+            if not cap.isOpened():
+                logger.error(f"Failed to connect to RTSP stream: {camera_name}")
+                return None
+            
+            # Get stream properties
+            fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
+            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            
+            if width == 0 or height == 0:
+                logger.error(f"Invalid stream resolution: {width}x{height}")
+                cap.release()
+                return None
+            
+            logger.info(f"Stream {camera_name}: {width}x{height} @ {fps} FPS")
+            
+            # Create output directory
+            output_path_obj = Path(output_dir)
+            output_path_obj.mkdir(parents=True, exist_ok=True)
+            
+            # Create output file
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            safe_name = "".join(c for c in camera_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
+            output_file = output_path_obj / f"rtsp_capture_{safe_name}_{timestamp}.mp4"
+            
+            # Setup video writer
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+            out = cv2.VideoWriter(
+                str(output_file),
+                fourcc,
+                fps,
+                (width, height)
+            )
+            
+            if not out.isOpened():
+                logger.error(f"Failed to open video writer for {output_file}")
+                cap.release()
+                return None
+            
+            # Capture frames
+            frame_count = 0
+            max_frames = fps * duration_seconds
+            start_time = datetime.now()
+            
+            logger.info(f"Capturing {max_frames} frames ({duration_seconds}s at {fps} FPS)")
+            
+            while frame_count < max_frames:
+                ret, frame = cap.read()
+                
+                if not ret:
+                    logger.warning(f"Lost connection to {camera_name} after {frame_count} frames")
+                    break
+                
+                out.write(frame)
+                frame_count += 1
+                
+                # Log progress every 5 seconds
+                if frame_count % max(1, fps * 5) == 0:
+                    elapsed = (datetime.now() - start_time).total_seconds()
+                    logger.info(f"{camera_name}: {frame_count}/{max_frames} frames ({elapsed:.1f}s)")
+            
+            # Release resources
+            cap.release()
+            out.release()
+            
+            if frame_count == 0:
+                logger.error(f"No frames captured from {camera_name}")
+                output_file.unlink(missing_ok=True)
+                return None
+            
+            logger.info(f"Capture complete: {output_file} ({frame_count} frames)")
+            return str(output_file)
+            
+        except Exception as e:
+            logger.error(f"Error capturing from RTSP {camera_name}: {e}")
+            return None

@@ -3,7 +3,7 @@ DRISTI - Lost Person Detection System
 A simplified system to find lost persons in CCTV video footage
 """
 
-from fastapi import FastAPI, UploadFile, File, BackgroundTasks
+from fastapi import FastAPI, UploadFile, File, BackgroundTasks, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,8 +14,13 @@ from pathlib import Path
 import json
 import asyncio
 from typing import List, Dict, Any
+import logging
 
 from search_service import SearchService
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Create necessary directories
 UPLOAD_DIR = Path("uploads")
@@ -75,11 +80,15 @@ async def get_cameras():
         "total": len(cameras)
     }
 
-# Upload lost person photo and search
+# Enhanced search with CCTV support
 @app.post("/api/search")
-async def search_lost_person(file: UploadFile = File(...), background_tasks: BackgroundTasks = None):
+async def search_lost_person(
+    file: UploadFile = File(...),
+    use_cctv: bool = Query(False, description="Use connected CCTV cameras"),
+    background_tasks: BackgroundTasks = None
+):
     """
-    Upload a photo of the lost person and search in all CCTV videos
+    Upload a photo of the lost person and search in CCTV videos
     
     Returns:
     - Confidence percentage
@@ -104,6 +113,11 @@ async def search_lost_person(file: UploadFile = File(...), background_tasks: Bac
         
         # Get all video files
         videos = list(VIDEOS_DIR.glob("*.mp4"))
+        
+        # If use_cctv is requested, capture from connected cameras
+        if use_cctv:
+            logger.info("CCTV search requested")
+            # CCTV capture will happen asynchronously in search_service
         
         if not videos:
             return JSONResponse(
@@ -145,16 +159,65 @@ async def search_lost_person(file: UploadFile = File(...), background_tasks: Bac
             content={
                 "success": True,
                 "search_id": search_id,
-                "message": "Search started. Results will be available shortly.",
+                "message": "Search started. Capturing and processing video footage (up to 15 seconds)...",
                 "status_url": f"/api/search-results/{search_id}"
             }
         )
         
     except Exception as e:
-        print(f"Error in search: {str(e)}")
+        logger.error(f"Error in search: {str(e)}")
         return JSONResponse(
             status_code=500,
             content={"success": False, "message": f"Search error: {str(e)}"}
+        )
+
+# CCTV Configuration Endpoints
+@app.post("/api/cctv/config")
+async def save_cctv_config(cameras: Dict[str, Any]):
+    """Save CCTV camera configuration"""
+    try:
+        config_file = Path("cctv_config.json")
+        
+        with open(config_file, "w") as f:
+            json.dump(cameras, f, indent=2)
+        
+        logger.info(f"CCTV config saved: {len(cameras)} camera(s)")
+        
+        return {
+            "success": True,
+            "message": f"Configuration saved for {len(cameras)} camera(s)"
+        }
+    except Exception as e:
+        logger.error(f"Error saving CCTV config: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "message": str(e)}
+        )
+
+@app.get("/api/cctv/config")
+async def get_cctv_config():
+    """Get saved CCTV configuration"""
+    try:
+        config_file = Path("cctv_config.json")
+        
+        if config_file.exists():
+            with open(config_file, "r") as f:
+                config = json.load(f)
+            
+            return {
+                "success": True,
+                "cameras": config
+            }
+        
+        return {
+            "success": True,
+            "cameras": []
+        }
+    except Exception as e:
+        logger.error(f"Error reading CCTV config: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "message": str(e)}
         )
 
 # Get search results

@@ -1,7 +1,7 @@
-# 🚀 DRISTI - Lost Person Detection System
+# 🚀 DRISTI v2.0 - Lost Person Detection System
 ## Start Here!
 
-Welcome to **DRISTI**, a facial recognition system designed to find lost persons in CCTV video footage.
+Welcome to **DRISTI**, a facial recognition system designed to find lost persons in CCTV video footage. Now with **Live CCTV Integration**!
 
 ---
 
@@ -27,27 +27,292 @@ Done! 🎉
 
 ---
 
+## 🆕 What's New in v2.0?
+
+✨ **Connect with CCTV** - Button in top-right corner  
+🎥 **Real-Time Capture** - 15-second automatic capture  
+📹 **Multi-Camera** - Search multiple cameras simultaneously  
+🌐 **RTSP Support** - Works with any IP camera (10+ brands)  
+📱 **Simple Setup** - In-app instructions for camera setup  
+
+---
+
 ## 📚 Documentation Guide
 
 **Start here based on your needs:**
 
-| Document | Read If | Time |
+| Document | Purpose | Time |
 |----------|---------|------|
-| **THIS FILE** | You're new here | 2 min |
-| [QUICK_START.md](QUICK_START.md) | You want to run it now | 5 min |
-| [README.md](README.md) | You want full details | 15 min |
-| [SETUP_GUIDE.md](SETUP_GUIDE.md) | You need detailed setup | 20 min |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | You want technical details | 30 min |
-| [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) | You want complete overview | 25 min |
+| **THIS FILE** | Overview & quick navigation | 2 min |
+| [QUICK_START_CCTV.md](QUICK_START_CCTV.md) | Start using NOW | 5 min |
+| [IMPLEMENTATION_NOTES.md](../IMPLEMENTATION_NOTES.md) | What's new in v2.0 | 5 min |
+| [README.md](../README.md) | Complete documentation | 15 min |
+| [CCTV_SETUP_GUIDE.md](CCTV_SETUP_GUIDE.md) | Setup cameras by brand | 20 min |
+| [ARCHITECTURE_CCTV.md](ARCHITECTURE_CCTV.md) | Technical architecture | 15 min |
+| [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) | Implementation details | 20 min |
+| [SETUP_GUIDE.md](SETUP_GUIDE.md) | Original detailed setup | 20 min |
+| [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) | Project overview | 15 min |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Original architecture | 20 min |
 
 ---
 
 ## ✨ Key Features
 
+✅ **CCTV Integration** - Connect live IP cameras  
+✅ **Real-Time Processing** - 15-second automatic capture  
+✅ **Multi-Camera Search** - Search all cameras at once  
 ✅ **No Login** - Direct access  
 ✅ **Drag & Drop** - Easy file upload  
-✅ **Multi-Video** - Search all cameras  
 ✅ **Face Detection** - Accurate matching  
+✅ **Confidence Scores** - See match accuracy  
+✅ **Snapshots** - Save evidence images  
+
+---
+
+## 🎯 Three Ways to Use
+
+### 1️⃣ Demo Mode (No CCTV needed)
+- Place MP4 videos in `CCTVS/` folder
+- Upload person's photo
+- Click "Search"
+- Get results instantly
+- Perfect for testing!
+
+### 2️⃣ Live CCTV Mode
+- Click "Connect with CCTV"
+- Add camera RTSP URLs
+- Upload person's photo
+- System captures 15 seconds from each camera
+- Get real-time results
+
+### 3️⃣ Hybrid Mode
+- Use both local videos AND live CCTV
+- Search everything at once
+- Combined results from all sources
+
+---
+
+## 🚀 Getting Started
+
+### For First-Time Users:
+1. Read [QUICK_START_CCTV.md](QUICK_START_CCTV.md) (5 min)
+2. Start server: `python main.py`
+3. Open: `http://localhost:8000`
+4. Try with local videos first
+5. (Optional) Add CCTV cameras later
+
+### For CCTV Setup:
+1. See [QUICK_START_CCTV.md](QUICK_START_CCTV.md) - Common RTSP URLs
+2. See [CCTV_SETUP_GUIDE.md](CCTV_SETUP_GUIDE.md) - Step-by-step by brand
+3. Click "Connect with CCTV" button
+4. Follow in-app instructions
+
+### For Developers:
+1. Read [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
+2. Review [ARCHITECTURE_CCTV.md](ARCHITECTURE_CCTV.md)
+3. Check modified source files
+4. Test API endpoints
+
+---
+
+## 🎥 Common RTSP URLs
+
+| Brand | Example URL |
+|-------|------------|
+| Hikvision | `rtsp://admin:12345@192.168.1.100:554/Streaming/Channels/101` |
+| Dahua | `rtsp://admin:admin@192.168.1.100:554/stream/main` |
+| Uniview | `rtsp://admin:pass@192.168.1.100:554/stream/profile1` |
+| Axis | `rtsp://admin:pass@192.168.1.100/axis-media/media.amp` |
+| Reolink | `rtsp://admin:pass@192.168.1.100:554/h264Preview_01_main` |
+
+> See [CCTV_SETUP_GUIDE.md](CCTV_SETUP_GUIDE.md) for complete list
+
+---
+
+## 📋 Quick Navigation
+
+### Setup & Installation
+- [QUICK_START_CCTV.md](QUICK_START_CCTV.md) - Quick start guide
+- [SETUP_GUIDE.md](SETUP_GUIDE.md) - Detailed setup
+
+### CCTV & Cameras
+- [CCTV_SETUP_GUIDE.md](CCTV_SETUP_GUIDE.md) - Camera setup by brand
+- [IMPLEMENTATION_NOTES.md](../IMPLEMENTATION_NOTES.md) - What's new
+- [QUICK_START_CCTV.md](QUICK_START_CCTV.md) - CCTV quick start
+
+### Technical Documentation
+- [ARCHITECTURE_CCTV.md](ARCHITECTURE_CCTV.md) - v2.0 architecture
+- [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Implementation details
+- [README.md](../README.md) - API documentation
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Original architecture
+
+### Project Documentation
+- [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) - Project overview
+- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - File structure
+- [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) - Upgrade guide
+
+---
+
+## 🎯 Use Cases
+
+### 👮 Law Enforcement
+- Find missing persons
+- Track suspects
+- Get exact timestamps
+- Save evidence
+
+### 🏢 Security Operations
+- Monitor multiple locations
+- Quick incident response
+- Searchable video database
+- Automated tracking
+
+### 🧪 Development
+- Test without cameras
+- Demo to stakeholders
+- Full feature testing
+
+---
+
+## ⚙️ System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| Python | 3.8+ | 3.10+ |
+| RAM | 4GB | 8GB+ |
+| CPU | Dual-core | Quad-core |
+| Storage | 2GB | 10GB |
+| Network | 100Mbps | 1Gbps |
+
+---
+
+## 🔍 Features at a Glance
+
+```
+📱 Frontend
+├─ Upload lost person photo
+├─ Connect with CCTV button
+├─ Configure cameras with RTSP URL
+├─ Real-time search
+└─ View results with confidence scores
+
+🔧 Backend
+├─ MediaPipe face detection
+├─ ResNet face embeddings
+├─ RTSP stream capture (15 seconds)
+├─ Multi-camera processing
+└─ JSON result storage
+
+📊 Results Display
+├─ Top 20 matches
+├─ Confidence percentage
+├─ Camera location
+├─ Timestamp
+└─ Snapshot images
+```
+
+---
+
+## ✅ Version 2.0 Checklist
+
+- [x] CCTV integration button
+- [x] Setup modal with instructions
+- [x] Camera configuration form
+- [x] RTSP stream capture
+- [x] 15-second capture limit
+- [x] Multi-camera support
+- [x] Real-time processing
+- [x] Updated documentation
+- [x] Setup guides by brand
+- [x] RTSP URL examples
+- [x] Architecture documentation
+- [x] Implementation details
+
+---
+
+## 🆘 Troubleshooting
+
+### "Connection refused"
+→ Make sure server is running: `python main.py`
+
+### "Cannot connect to RTSP"
+→ See [CCTV_SETUP_GUIDE.md](CCTV_SETUP_GUIDE.md) troubleshooting
+
+### "No results found"
+→ Check [README.md](../README.md) troubleshooting section
+
+### "Port 8000 already in use"
+→ Change port in main.py: `--port 8001`
+
+---
+
+## 📚 Additional Resources
+
+### In This Directory
+- README.md - Complete reference
+- QUICK_START_CCTV.md - Quick reference
+- CCTV_SETUP_GUIDE.md - Setup by brand
+- ARCHITECTURE_CCTV.md - System design
+- IMPLEMENTATION_SUMMARY.md - Tech details
+
+### File Locations
+- Source code: Root directory
+- Videos: `CCTVS/` folder
+- Uploads: `uploads/` folder
+- Results: `results/` folder
+- Logs: `logs/` folder
+
+---
+
+## 🎉 Ready to Start?
+
+1. **Read**: [QUICK_START_CCTV.md](QUICK_START_CCTV.md) (5 min)
+2. **Run**: `python main.py`
+3. **Go**: `http://localhost:8000`
+4. **Try**: Upload a photo and search
+5. **Enjoy**: See results in real-time!
+
+---
+
+## 📊 What's Different in v2.0?
+
+| Feature | v1.0 | v2.0 |
+|---------|------|------|
+| Local Videos | ✅ | ✅ |
+| Live CCTV | ❌ | ✅ NEW |
+| RTSP Capture | ❌ | ✅ NEW |
+| Multi-camera | Limited | ✅ Full |
+| In-app Setup | ❌ | ✅ NEW |
+| Documentation | Basic | Complete |
+
+---
+
+## 🌟 Highlights
+
+### New in v2.0:
+- 🎥 **Live CCTV Integration** - Real-time video capture
+- 📍 **Multi-Camera Search** - Search all cameras at once
+- ⏱️ **Automatic Capture** - 15-second clips automatically
+- 📖 **Setup Guides** - Step-by-step for each camera brand
+- 🎯 **Better Docs** - Complete documentation suite
+
+---
+
+## 💡 Pro Tips
+
+- **Use 15 seconds**: Default duration is optimal
+- **Test first**: Try with local videos before CCTV
+- **Check RTSP**: Verify URL format before saving
+- **Monitor logs**: Watch terminal for capture progress
+- **Save results**: Download snapshots as evidence
+
+---
+
+**Version**: 2.0.0  
+**Status**: ✅ Production Ready  
+**Last Updated**: December 20, 2025
+
+🚀 **Let's get started!**
 ✅ **Confidence %** - Shows accuracy  
 ✅ **Timestamps** - Know when/where  
 ✅ **Evidence** - See match snapshots  
