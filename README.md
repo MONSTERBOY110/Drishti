@@ -46,7 +46,7 @@ A comprehensive face recognition system that identifies lost persons in CCTV foo
 
 <div align="center">
 
-| Step 1 | Step 2 |
+|  |  |
 |---|---|
 | ![Process 1](Frontend/assets/process1.png) | ![Process 2](Frontend/assets/process2.png) |
 | ![Process 3](Frontend/assets/process3.png) | ![Process 4](Frontend/assets/process4.png) |
