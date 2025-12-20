@@ -1,4 +1,4 @@
-# DRISTI - Lost Person Detection System
+# DRISHTI - Lost Person Detection System
 
 A comprehensive face recognition system that identifies lost persons in CCTV footage using AI-powered face detection and matching.
 
@@ -64,7 +64,7 @@ A comprehensive face recognition system that identifies lost persons in CCTV foo
 
 1. **Clone/Download the Project**
    ```bash
-   cd DRISTI
+   cd DRISHTI
    ```
 
 2. **Install Dependencies**
@@ -333,5 +333,4 @@ Built with:
 
 ---
 
-**Last Updated**: December 2025
-**Version**: 2.0.0
+**Made By**: Subhojyoti Maity & Chandan Saha
