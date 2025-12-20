@@ -30,6 +30,29 @@ A comprehensive face recognition system that identifies lost persons in CCTV foo
 └── README.md                 # This file
 ```
 
+## System Interface
+
+### Main UI Views
+
+<div align="center">
+
+| CCTV Interface | Search Results |
+|---|---|
+| ![CCTV UI](Frontend/assets/cctv_ui.png) | ![Result UI](Frontend/assets/result_ui.png) |
+
+</div>
+
+### System Process Flow
+
+<div align="center">
+
+| Step 1 | Step 2 |
+|---|---|
+| ![Process 1](Frontend/assets/process1.png) | ![Process 2](Frontend/assets/process2.png) |
+| ![Process 3](Frontend/assets/process3.png) | ![Process 4](Frontend/assets/process4.png) |
+
+</div>
+
 ## Installation
 
 ### Prerequisites
