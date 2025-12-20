@@ -5,6 +5,7 @@
 **DRISTI** is a Lost Person Detection System that uses facial recognition to find missing individuals in CCTV video footage from crowded areas.
 
 ### Key Requirements (All Met ✅)
+
 - ✅ **NO Login/Registration** - Direct access to upload and search
 - ✅ **Upload Interface** - Simple drag-and-drop for lost person photo
 - ✅ **Multi-Video Support** - Search across multiple CCTV feeds (4 videos currently)
@@ -66,24 +67,30 @@ f:\PROJECTS\Drishti\
 ## ⚡ Quick Start (4 Steps)
 
 ### Step 1: Install Dependencies
+
 ```bash
 cd f:\PROJECTS\Drishti
 pip install -r requirements.txt
 ```
 
 ### Step 2: Verify System
+
 ```bash
 python test_system.py
 ```
+
 Expected output: `✓ All systems ready!`
 
 ### Step 3: Start Backend Server
+
 ```bash
 python main.py
 ```
+
 Server starts at: **http://localhost:8000**
 
 ### Step 4: Open in Browser
+
 Navigate to: **http://localhost:8000**
 
 ---
@@ -91,8 +98,9 @@ Navigate to: **http://localhost:8000**
 ## 🔧 System Components
 
 ### 1. **Frontend** (index.html)
+
 - **Purpose**: User interface
-- **Features**: 
+- **Features**:
   - Drag-and-drop upload area
   - Photo preview
   - Search button
@@ -102,6 +110,7 @@ Navigate to: **http://localhost:8000**
 - **Technology**: HTML, CSS, Vanilla JavaScript
 
 ### 2. **Backend** (main.py)
+
 - **Purpose**: HTTP server and API endpoints
 - **Features**:
   - Receives photo uploads
@@ -119,6 +128,7 @@ Navigate to: **http://localhost:8000**
   - `GET /` - Serve frontend
 
 ### 3. **Face Search Service** (search_service.py)
+
 - **Purpose**: Core face detection and matching logic
 - **Features**:
   - Detects faces in uploaded photo using MediaPipe
@@ -165,29 +175,34 @@ Navigate to: **http://localhost:8000**
 ## 🎯 Key Features Explained
 
 ### Feature 1: No Login Required
+
 - User goes directly to homepage
 - No authentication screens
 - Click to upload
 - Get results immediately
 
 ### Feature 2: Multi-Video Support
+
 - Searches all 4 CCTV videos simultaneously
 - Each video processed independently
 - Results combined and sorted
 - Shows which camera detected person
 
 ### Feature 3: Confidence Scores
+
 - Shows match reliability (0-100%)
 - Based on face embedding similarity
 - Higher = more confident match
 - Results sorted by confidence (best first)
 
 ### Feature 4: Timestamp Information
+
 - Shows exact time in video: MM:SS format
 - Shows frame number where match occurred
 - Helps authorities locate time period
 
 ### Feature 5: Snapshot Evidence
+
 - Saves JPEG from video at match location
 - Shows face with green bounding box
 - Visual proof of detection
@@ -198,6 +213,7 @@ Navigate to: **http://localhost:8000**
 ## ⚙️ Configuration & Tuning
 
 ### Adjust Sensitivity
+
 Edit `search_service.py`:
 
 ```python
@@ -220,21 +236,22 @@ Then restart: `python main.py`
 
 ## 📈 Performance Statistics
 
-| Metric | Value |
-|--------|-------|
-| System test pass | ✓ 6/6 |
-| Backend syntax | ✓ Valid |
-| Frontend files | ✓ Present |
-| CCTV videos | ✓ 4 files (13.29 MB) |
-| Search 4 videos | ~30-60 seconds |
-| Memory usage | 500-800 MB |
-| Network latency | < 100ms |
+| Metric           | Value                |
+| ---------------- | -------------------- |
+| System test pass | ✓ 6/6                |
+| Backend syntax   | ✓ Valid              |
+| Frontend files   | ✓ Present            |
+| CCTV videos      | ✓ 4 files (13.29 MB) |
+| Search 4 videos  | ~30-60 seconds       |
+| Memory usage     | 500-800 MB           |
+| Network latency  | < 100ms              |
 
 ---
 
 ## 🔐 Security & Privacy
 
 ### What's Implemented
+
 - ✅ Input validation (file type/size)
 - ✅ Local processing only (no cloud)
 - ✅ Results stored locally (in `results/` folder)
@@ -242,12 +259,14 @@ Then restart: `python main.py`
 - ✅ Clean file names
 
 ### What's NOT Implemented (By Design)
+
 - ❌ No authentication (as requested)
 - ❌ No database (stateless)
 - ❌ No user tracking
 - ❌ No cloud storage
 
 ### Production Recommendations
+
 - Add authentication/authorization
 - Implement role-based access control
 - Add audit logging
@@ -259,34 +278,35 @@ Then restart: `python main.py`
 
 ## 📚 Documentation Files
 
-| File | Purpose |
-|------|---------|
-| **README.md** | Complete user and feature guide |
-| **QUICK_START.md** | 60-second setup instructions |
-| **SETUP_GUIDE.md** | Detailed setup with examples |
-| **ARCHITECTURE.md** | Technical deep dive |
-| **THIS FILE** | Project summary |
+| File                | Purpose                         |
+| ------------------- | ------------------------------- |
+| **README.md**       | Complete user and feature guide |
+| **QUICK_START.md**  | 60-second setup instructions    |
+| **SETUP_GUIDE.md**  | Detailed setup with examples    |
+| **ARCHITECTURE.md** | Technical deep dive             |
+| **THIS FILE**       | Project summary                 |
 
 ---
 
 ## 🎓 Technical Stack
 
-| Component | Technology | Version |
-|-----------|-----------|---------|
-| Web Framework | FastAPI | 0.104.1 |
-| Server | Uvicorn | 0.24.0 |
-| Video Processing | OpenCV | 4.8.1.78 |
-| Face Detection | MediaPipe | 0.10.9 |
-| Face Recognition | PyTorch | 2.1.0 |
-| Vision Models | Torchvision | 0.16.0 |
-| Image Processing | Pillow | 10.1.0 |
-| Numerical | NumPy | 1.24.3 |
+| Component        | Technology  | Version  |
+| ---------------- | ----------- | -------- |
+| Web Framework    | FastAPI     | 0.104.1  |
+| Server           | Uvicorn     | 0.24.0   |
+| Video Processing | OpenCV      | 4.8.1.78 |
+| Face Detection   | MediaPipe   | 0.10.9   |
+| Face Recognition | PyTorch     | 2.1.0    |
+| Vision Models    | Torchvision | 0.16.0   |
+| Image Processing | Pillow      | 10.1.0   |
+| Numerical        | NumPy       | 1.24.3   |
 
 ---
 
 ## ✅ Verification Checklist
 
 Before running, verify:
+
 - [ ] Python 3.8+ installed
 - [ ] All dependencies installed (`pip install -r requirements.txt`)
 - [ ] System test passes (`python test_system.py`)
@@ -301,6 +321,7 @@ Before running, verify:
 ## 🚀 Deployment Instructions
 
 ### Local Machine
+
 ```bash
 cd f:\PROJECTS\Drishti
 python main.py
@@ -308,6 +329,7 @@ python main.py
 ```
 
 ### Network (Same Office)
+
 ```bash
 python main.py
 # Others access: http://<your-ip>:8000
@@ -315,6 +337,7 @@ python main.py
 ```
 
 ### Production Server
+
 ```bash
 # Install on production machine
 # Add to systemd, docker, or task scheduler
@@ -330,18 +353,23 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 ## 🔍 Troubleshooting
 
 ### Issue: "No face detected in photo"
+
 **Solution**: Upload clearer photo with frontal face view
 
 ### Issue: "Search takes too long"
+
 **Solution**: Increase `frame_skip` from 5 to 10 in search_service.py
 
 ### Issue: "Too many false positives"
+
 **Solution**: Increase `similarity_threshold` from 0.6 to 0.7
 
 ### Issue: "Port 8000 already in use"
+
 **Solution**: `python main.py --port 8001` or kill process using 8000
 
 ### Issue: "ModuleNotFoundError"
+
 **Solution**: Run `pip install -r requirements.txt` again
 
 ---
@@ -349,18 +377,21 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 ## 💡 Usage Examples
 
 ### Example 1: Find Lost Child in Mall
+
 1. Upload clear photo of child
 2. System searches mall CCTV footage
 3. Shows timestamp and camera location
 4. Authorities can then physically locate area
 
 ### Example 2: Find Lost Elder
+
 1. Upload photo of elderly person
 2. System matches against street CCTV
 3. Shows if person walked through area
 4. Helps track movement pattern
 
 ### Example 3: Find Person at Event
+
 1. Upload photo of missing attendee
 2. System searches event CCTV
 3. Shows all locations where seen
@@ -399,6 +430,7 @@ Display Results
 ## 📞 Support & Debugging
 
 ### Debug Mode
+
 ```python
 # In main.py
 app = FastAPI(debug=True)
@@ -408,6 +440,7 @@ tail -f logs/face_recognition.log
 ```
 
 ### Test API Endpoints
+
 ```bash
 # Health check
 curl http://localhost:8000/api/health
@@ -434,22 +467,26 @@ curl -F "file=@test.jpg" http://localhost:8000/api/search
 ## 📋 File Manifest
 
 ### Backend Files
+
 - `main.py` - 7,101 bytes - FastAPI server
 - `search_service.py` - 12,577 bytes - Face detection logic
 - `config.py` - Configuration settings
 - `requirements.txt` - 208 bytes - Dependencies
 
 ### Frontend Files
+
 - `Frontend/index.html` - 21,013 bytes - Complete UI with CSS & JS
 - `Frontend/assets/` - Additional resources
 
 ### Documentation
+
 - `README.md` - User guide
 - `QUICK_START.md` - Quick setup
 - `SETUP_GUIDE.md` - Detailed setup
 - `ARCHITECTURE.md` - Technical details
 
 ### Video Files
+
 - `CCTVS/cctv1.mp4` - 4.35 MB
 - `CCTVS/cctv2.mp4` - 3.71 MB
 - `CCTVS/cctv3.mp4` - 2.76 MB
@@ -462,6 +499,7 @@ curl -F "file=@test.jpg" http://localhost:8000/api/search
 **DRISTI is now ready to use!**
 
 ### What You Have
+
 ✅ Complete backend API with FastAPI  
 ✅ Clean, simple frontend without authentication  
 ✅ Advanced face detection using MediaPipe  
@@ -469,9 +507,10 @@ curl -F "file=@test.jpg" http://localhost:8000/api/search
 ✅ Video processing with OpenCV  
 ✅ 4 CCTV test videos included  
 ✅ Comprehensive documentation  
-✅ All tests passing (6/6)  
+✅ All tests passing (6/6)
 
 ### What to Do Next
+
 1. Run `python main.py`
 2. Open `http://localhost:8000`
 3. Upload a photo
