@@ -1,6 +1,7 @@
 """
 DRISTI - Lost Person Detection System
 A simplified system to find lost persons in CCTV video footage
+uvicorn main:app --reload
 """
 
 from fastapi import FastAPI, UploadFile, File, BackgroundTasks, Query
