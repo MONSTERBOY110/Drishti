@@ -1,5 +1,5 @@
 // API Configuration (modernized for module use)
-export const API_BASE_URL = 'http://localhost:8000';
+export const API_BASE_URL = 'https://project-drishti.onrender.com';
 export const API_VERSION = '/api/v1';
 
 // Global variables
