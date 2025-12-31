@@ -14,21 +14,46 @@ A comprehensive face recognition system that identifies lost persons in CCTV foo
 
 ## Project Structure
 
+DRISTI/
+├── src/
+│   ├── backend/
+│   │   ├── app.py              # FastAPI application and routes
+│   │   ├── search_service.py   # Face detection and matching logic
+│   │   └── __init__.py
+│   ├── config/
+│   │   ├── settings.py         # Configuration settings
+│   │   └── __init__.py
+│   ├── utils/
+│   │   └── __init__.py
+│   └── __init__.py
+│
+├── Frontend/                    # Web UI (HTML, CSS, JavaScript)
+│   ├── index.html
+│   ├── script.js
+│   ├── style.css
+│   └── assets/
+│
+├── CCTVS/                       # CCTV video storage
+│   ├── camera1.mp4
+│   ├── camera2.mp4
+│   └── ...
+│
+├── data/
+│   ├── uploads/                # Temporary photo uploads
+│   ├── results/                # Search results and snapshots
+│   └── cctvs/                  # Alternative video location
+│
+├── docs/
+│   ├── ARCHITECTURE.md         # Technical architecture
+│   ├── QUICK_START.md          # Quick start guide
+│   └── QUICK_START_CCTV.md     # CCTV setup guide
+│
+├── run.py                       # Application entry point
+├── requirements.txt             # Python dependencies
+├── .gitignore                   # Git ignore rules
+└── README.md                    # This file
 ```
-.
-├── Frontend/                  # Web UI (HTML, CSS, JavaScript)
-│   ├── index.html            # Main page with CCTV integration
-│   ├── script.js             # Frontend logic
-│   ├── style.css             # Styling
-│   └── assets/               # Images and icons
-├── CCTVS/                    # CCTV video storage
-├── uploads/                  # Uploaded photos
-├── results/                  # Search results and snapshots
-├── main.py                   # FastAPI backend
-├── search_service.py         # Face detection & matching logic
-├── requirements.txt          # Python dependencies
-└── README.md                 # This file
-```
+
 
 ## System Interface
 
@@ -74,7 +99,7 @@ A comprehensive face recognition system that identifies lost persons in CCTV foo
 
 3. **Run the Application**
    ```bash
-   python main.py
+   python run.py
    ```
    The server will start at `http://localhost:8000`
 

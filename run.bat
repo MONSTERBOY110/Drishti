@@ -4,7 +4,7 @@ REM Startup Script for Windows
 
 echo.
 echo ======================================================================
-echo DRISTI - Lost Person Detection System
+echo DRISTI - Lost Person Detection System v2.0
 echo ======================================================================
 echo.
 
@@ -33,15 +33,25 @@ if %errorlevel% neq 0 (
 REM Check if CCTVS folder exists
 if not exist "CCTVS" (
     echo.
-    echo WARNING: CCTVS folder not found
-    echo Please add your video files to the CCTVS folder
+    echo INFO: CCTVS folder not found
+    echo To use video files, add MP4 videos to the CCTVS folder
     echo.
+)
+
+REM Check if data folder exists
+if not exist "data" (
+    mkdir data
+)
+if not exist "data\uploads" (
+    mkdir data\uploads
+)
+if not exist "data\results" (
+    mkdir data\results
 )
 
 REM Start the server
 echo.
 echo Starting DRISTI Backend Server...
+echo Server will be available at: http://localhost:8000
 echo.
-python main.py
-
-pause
+python run.py
