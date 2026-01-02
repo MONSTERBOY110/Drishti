@@ -1,5 +1,5 @@
 // API Configuration (modernized for module use)
-export const API_BASE_URL = 'https://project-drishti.onrender.com';
+export const API_BASE_URL = 'https://drishti-backend-ncjd.onrender.com';
 export const API_VERSION = '/api';
 
 // Global variables
