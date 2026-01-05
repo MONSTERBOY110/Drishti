@@ -5,7 +5,6 @@ Core ML functionality for DRISTI system.
 
 import cv2
 import numpy as np
-import mediapipe as mp
 from pathlib import Path
 from datetime import datetime
 import json
@@ -37,12 +36,9 @@ class SearchService:
         """Initialize face detection and recognition models."""
         logger.info("Initializing SearchService...")
         
-        # Initialize MediaPipe Face Detection
-        self.mp_face_detection = mp.solutions.face_detection
-        self.face_detection = self.mp_face_detection.FaceDetection(
-            model_selection=1,  # Long-range model for CCTV
-            min_detection_confidence=0.5
-        )
+        # Initialize OpenCV Face Detection (Haar Cascade - more reliable than MediaPipe on Render)
+        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        self.face_cascade = cv2.CascadeClassifier(cascade_path)
         
         # Load face recognition model
         self.face_model = self._load_face_model()
@@ -50,6 +46,7 @@ class SearchService:
         # Settings
         self.similarity_threshold = 0.6  # Lower threshold for crowd detection
         self.frame_skip = 5  # Process every 5th frame for speed
+        self.device = torch.device('cpu')  # Use CPU for Render compatibility
         
         logger.info("SearchService initialized successfully")
     
@@ -60,6 +57,7 @@ class SearchService:
             from torchvision.models import ResNet18_Weights
             model = models.resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
             model = nn.Sequential(*list(model.children())[:-1])
+            model = model.to(self.device)
             model.eval()
             logger.info("ResNet18 face model loaded")
             return model
@@ -88,12 +86,12 @@ class SearchService:
             ])
             
             pil_image = Image.fromarray(cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB))
-            image_tensor = transform(pil_image).unsqueeze(0)
+            image_tensor = transform(pil_image).unsqueeze(0).to(self.device)
             
             with torch.no_grad():
                 embedding = self.face_model(image_tensor)
             
-            embedding = embedding.squeeze().numpy()
+            embedding = embedding.squeeze().cpu().numpy()
             if np.linalg.norm(embedding) > 0:
                 embedding = embedding / np.linalg.norm(embedding)
             
@@ -113,40 +111,40 @@ class SearchService:
     
     def detect_faces_in_frame(self, frame: np.ndarray) -> List[Dict[str, Any]]:
         """
-        Detect all faces in a frame using MediaPipe.
+        Detect all faces in a frame using OpenCV Haar Cascade.
         
         Returns:
             List of detected faces with bounding boxes and confidence scores.
         """
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.face_detection.process(rgb_frame)
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = self.face_cascade.detectMultiScale(
+            gray_frame,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30)
+        )
         
-        faces = []
+        detected_faces = []
+        h, w, _ = frame.shape
         
-        if results.detections:
-            h, w, _ = frame.shape
+        for (x, y, fw, fh) in faces:
+            # Add padding around face
+            x1 = max(0, x - 15)
+            y1 = max(0, y - 15)
+            x2 = min(w, x + fw + 15)
+            y2 = min(h, y + fh + 15)
             
-            for detection in results.detections:
-                bbox = detection.location_data.relative_bounding_box
-                confidence = float(detection.score[0])
-                
-                # Convert relative coordinates to pixel coordinates with padding
-                x1 = max(0, int(bbox.xmin * w) - 15)
-                y1 = max(0, int(bbox.ymin * h) - 15)
-                x2 = min(w, int((bbox.xmin + bbox.width) * w) + 15)
-                y2 = min(h, int((bbox.ymin + bbox.height) * h) + 15)
-                
-                # Extract face ROI
-                face_roi = frame[y1:y2, x1:x2].copy()
-                
-                if face_roi.size > 0:
-                    faces.append({
-                        'bbox': (x1, y1, x2, y2),
-                        'face': face_roi,
-                        'confidence': confidence
-                    })
+            # Extract face ROI
+            face_roi = frame[y1:y2, x1:x2].copy()
+            
+            if face_roi.size > 0:
+                detected_faces.append({
+                    'bbox': (x1, y1, x2, y2),
+                    'face': face_roi,
+                    'confidence': 0.9  # Haar cascade doesn't return confidence
+                })
         
-        return faces
+        return detected_faces
     
     def calculate_similarity(self, embedding1: np.ndarray, embedding2: np.ndarray) -> float:
         """
