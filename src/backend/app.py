@@ -3,7 +3,7 @@ DRISTI - Lost Person Detection System
 Main FastAPI application for face recognition in CCTV footage.
 """
 
-from fastapi import FastAPI, UploadFile, File, BackgroundTasks, Query
+from fastapi import FastAPI, UploadFile, File, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -15,6 +15,7 @@ import json
 import logging
 from typing import List, Dict, Any
 import sys
+import asyncio
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -77,17 +78,16 @@ async def health_check():
 @app.post("/api/search")
 async def search_lost_person(
     file: UploadFile = File(...),
-    use_cctv: bool = Query(False, description="Use connected CCTV cameras"),
-    background_tasks: BackgroundTasks = None
+    use_cctv: bool = Query(False, description="Use connected CCTV cameras")
 ):
     """
     Upload a photo of a lost person and search in CCTV videos.
+    Runs synchronously using asyncio.to_thread() to avoid Render timeout issues.
     
     Returns:
-        - Search ID for polling results
-        - Confidence percentages for matches
-        - Camera locations and timestamps
-        - Snapshot images of matches
+        - Results with matched faces
+        - Confidence percentages
+        - Timestamps and camera info
     """
     try:
         # Validate file
@@ -118,36 +118,26 @@ async def search_lost_person(
                 }
             )
         
-        # Run search asynchronously if background tasks available
-        if background_tasks:
-            background_tasks.add_task(
-                search_service.search_in_videos,
-                str(upload_path),
-                videos,
-                search_id
-            )
-            
-            return JSONResponse(
-                status_code=202,
-                content={
-                    "success": True,
-                    "search_id": search_id,
-                    "message": "Search started. Processing video footage...",
-                    "status_url": f"/api/search-results/{search_id}"
-                }
-            )
-        else:
-            # Synchronous search (for testing)
-            results = search_service.search_in_videos(str(upload_path), videos, search_id)
-            return JSONResponse(
-                status_code=200,
-                content={
-                    "success": True,
-                    "search_id": search_id,
-                    "results": results,
-                    "message": "Search completed"
-                }
-            )
+        # Run search synchronously using asyncio.to_thread() to prevent timeout
+        # This executes the CPU-heavy task in a thread pool without blocking the event loop
+        logger.info(f"Starting face search for {len(videos)} video file(s)...")
+        results = await asyncio.to_thread(
+            search_service.search_in_videos,
+            str(upload_path),
+            videos,
+            search_id
+        )
+        
+        # Return results directly (status 200)
+        return JSONResponse(
+            status_code=200,
+            content={
+                "success": True,
+                "search_id": search_id,
+                "results": results,
+                "message": "Search completed successfully"
+            }
+        )
         
     except Exception as e:
         logger.error(f"Error in search endpoint: {str(e)}", exc_info=True)

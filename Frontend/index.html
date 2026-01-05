@@ -871,57 +871,58 @@
                 const formData = new FormData();
                 formData.append('file', selectedFile);
 
-                // Send request
+                // Send request - Set timeout to 10 minutes for long search operations
                 const BACKEND_URL = window.location.hostname === 'localhost' 
                     ? 'http://localhost:8000'
                     : 'https://drishti-backend-yh74.onrender.com';
-                const response = await fetch(`${BACKEND_URL}/api/search`, {
-                    method: 'POST',
-                    body: formData
-                });
+                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 600000); // 10 minutes
 
-                const data = await response.json();
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/search`, {
+                        method: 'POST',
+                        body: formData,
+                        signal: controller.signal
+                    });
 
-                if (!data.success) {
-                    showError(data.message || 'Search failed');
-                    loadingSection.classList.remove('show');
-                    return;
-                }
+                    clearTimeout(timeoutId);
 
-                const searchId = data.search_id;
-
-                // Poll for results
-                const maxAttempts = 120; // 2 minutes with 1 second intervals
-                let attempts = 0;
-
-                const pollResults = async () => {
-                    try {
-                        const resultsResponse = await fetch(`${BACKEND_URL}/api/search-results/${searchId}`);
-                        const resultsData = await resultsResponse.json();
-
-                        if (resultsResponse.ok && resultsData.results) {
-                            loadingSection.classList.remove('show');
-                            displayResults(resultsData.results);
-                            resultsSection.classList.add('show');
-                        } else if (attempts < maxAttempts) {
-                            attempts++;
-                            setTimeout(pollResults, 1000);
-                        } else {
-                            showError('Search timeout. Please try again.');
-                            loadingSection.classList.remove('show');
-                        }
-                    } catch (error) {
-                        if (attempts < maxAttempts) {
-                            attempts++;
-                            setTimeout(pollResults, 1000);
-                        } else {
-                            showError('Error retrieving results: ' + error.message);
-                            loadingSection.classList.remove('show');
-                        }
+                    // Check response content type
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        showError('Invalid response from server');
+                        loadingSection.classList.remove('show');
+                        return;
                     }
-                };
 
-                pollResults();
+                    const data = await response.json();
+
+                    if (!data.success) {
+                        showError(data.message || 'Search failed');
+                        loadingSection.classList.remove('show');
+                        return;
+                    }
+
+                    // Results are returned directly (status 200)
+                    if (data.results) {
+                        loadingSection.classList.remove('show');
+                        displayResults(data.results);
+                        resultsSection.classList.add('show');
+                    } else {
+                        showError('No results returned from search');
+                        loadingSection.classList.remove('show');
+                    }
+
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        showError('Search timed out. Videos may be too large or system is busy.');
+                    } else {
+                        showError('Error: ' + error.message);
+                    }
+                    loadingSection.classList.remove('show');
+                }
 
             } catch (error) {
                 showError('Error: ' + error.message);
