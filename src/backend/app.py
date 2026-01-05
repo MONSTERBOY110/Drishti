@@ -291,22 +291,12 @@ async def save_cctv_config(cameras: Dict[str, Any]):
 # STATIC FILES
 # ============================================================================
 
-BASE_DIR = Path(__file__).resolve().parents[2]
-FRONTEND_DIR = BASE_DIR / "Frontend"
-
-# Serve static assets
-app.mount("/static", StaticFiles(directory="Frontend"), name="static")
-
-# Serve frontend UI
-@app.get("/")
-def serve_frontend():
-    index_file = FRONTEND_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return JSONResponse(
-        status_code=404,
-        content={"message": "Frontend not built"}
-    )
+# Mount frontend static files
+try:
+    app.mount("/", StaticFiles(directory="Frontend", html=True), name="frontend")
+    logger.info("Frontend mounted successfully")
+except Exception as e:
+    logger.warning(f"Could not mount frontend: {e}")
 
 
 # ============================================================================
