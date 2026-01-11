@@ -1002,6 +1002,12 @@
             document.getElementById('summaryDiv').style.display = 'none';
             document.getElementById('matchesContainer').innerHTML = '';
             previewSection.classList.add('show');
+            // Tell backend to clear recent result snapshots and cache
+            try {
+                fetch('/api/clear-results', { method: 'POST' }).catch(err => console.warn('Clear results failed', err));
+            } catch (e) {
+                console.warn('Clear results error', e);
+            }
         }
 
         // Initialize CCTV preview on page load

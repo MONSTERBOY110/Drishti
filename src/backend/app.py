@@ -220,6 +220,36 @@ async def get_search_results(search_id: str):
         )
 
 
+@app.post("/api/clear-results")
+async def clear_results():
+    """
+    Clear generated snapshot image files from the results directory
+    and clear the in-memory search results cache. Called when user
+    starts a new search to free up ephemeral storage.
+    """
+    try:
+        # Clear in-memory cache
+        search_results_cache.clear()
+
+        # Remove image files from results directory (jpg/png/jpeg/png)
+        deleted_files = []
+        if Settings.RESULTS_DIR.exists():
+            for f in Settings.RESULTS_DIR.iterdir():
+                if f.is_file() and f.suffix.lower() in ('.jpg', '.jpeg', '.png'):
+                    try:
+                        f.unlink()
+                        deleted_files.append(f.name)
+                    except Exception as e:
+                        logger.warning(f"Could not delete result file {f}: {e}")
+
+        logger.info(f"Cleared {len(deleted_files)} result file(s) from disk and cleared cache")
+        return JSONResponse(status_code=200, content={"success": True, "deleted": deleted_files})
+
+    except Exception as e:
+        logger.error(f"Error clearing results: {e}", exc_info=True)
+        return JSONResponse(status_code=500, content={"success": False, "message": str(e)})
+
+
 @app.get("/api/snapshot/{filename}")
 async def get_snapshot(filename: str):
     """
